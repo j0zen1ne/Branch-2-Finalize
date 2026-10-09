@@ -31,15 +31,15 @@ def step (state:State) -> State:
     else:
         driver_input = 0.0
 
-    command_torque = max_torque + driver_input
-    force_at_wheels = (command_torque + gear_ratio)/radius
-    acceleration = force_at_wheels/radius
+    command_torque = max_torque * driver_input
+    force_at_wheels = (command_torque * gear_ratio)/radius
+    acceleration = force_at_wheels/mass
 
     new_vel = state.xvel + acceleration * time_step
     new_xpos = state.xpos + state.xvel * time_step
     new_time = state.time + time_step
 
-    newState = state(
+    newState = State(
         xpos = new_xpos, 
         ypos = 0.0, 
         xvel = new_vel, 
@@ -48,9 +48,11 @@ def step (state:State) -> State:
 
     return newState
 
+s0 = State(xpos = 0.0, ypos = 0.0, xvel = 0.0, time = 0.0)
+
 def animate (i):
     global s0
-    so = step(s0)
+    s0 = step(s0)
     ax.clear()
     ax.scatter([s0.xpos], [s0.ypos], s = 200, c = 'pink', marker = 's')
     ax.set_xlim(0, 300)

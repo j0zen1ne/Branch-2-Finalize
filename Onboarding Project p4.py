@@ -30,11 +30,12 @@ def step (state:State) -> State:
 
     propulsion_force = max_propulsion_force * driver_input * (1 - (state.xvel / vmax))
     acceleration = propulsion_force / mass
+    
     new_vel = state.xvel + (acceleration * time_step)
     new_xpos = state.xpos + state.xvel * time_step
     new_time = state.time + time_step
 
-    newState = state(
+    newState = State(
         xpos = new_xpos, 
         ypos = 0.0, 
         xvel = new_vel, 
@@ -42,6 +43,8 @@ def step (state:State) -> State:
     )
 
     return newState
+
+s0 = State(xpos = 0.0, ypos = 0.0, xvel = 0.0, time = 0.0)
 
 def animate (i):
     global s0

@@ -25,14 +25,17 @@ def step (state:State) -> State:
         state.xvel = 25.0
     elif state.time > 2.0 and state.xvel > 0.0:
         driver_input = 1.0
+    else:
+        driver_input = 0.0
 
     Brake_force = driver_input * max_braking_cap
     acceleration = -(Brake_force / mass)
+    
     new_vel = state.xvel + (acceleration * time_step)
     new_xpos = state.xpos + state.xvel * time_step
     new_time = state.time + time_step
 
-    newState = state(
+    newState = State(
         xpos = new_xpos, 
         ypos = 0.0, 
         xvel = new_vel, 
@@ -41,12 +44,15 @@ def step (state:State) -> State:
 
     return newState
 
+s0 = State(xpos = 0.0, ypos = 0.0, xvel = 0.0, time = 0.0)
+
 def animate (i):
     global s0
     s0 = step(s0)
     ax.clear()
     ax.scatter([s0.xpos], [s0.ypos], s = 200, c = 'pink', marker = 's')
     ax.set_xlim(0, 300)
+    print("At frame ", i, "the velocity is: ", s0.xvel)
     ax.set_ylim(0, 10)
     return ax, 
 

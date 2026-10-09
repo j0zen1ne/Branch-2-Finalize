@@ -28,13 +28,13 @@ def step (state:State) -> State:
         acceleration = 0.0
 
     # Net Acceleration should be below the calculation due to the fact that it is based on the calculated and simulated acceleration variable 
-    Drag = 0.5 * Cross_sect_area * drag_coefficient * Air_density * state.xvel^2
+    Drag = 0.5 * Cross_sect_area * drag_coefficient * Air_density * state.xvel * state.xvel
     Net_Accel = acceleration - (Drag/mass)
     new_vel = state.xvel + (Net_Accel * time_step)
     new_xpos = state.xpos + state.xvel * time_step
     new_time = state.time + time_step
 
-    newState = state(
+    newState = State(
         xpos = new_xpos, 
         ypos = 0.0, 
         xvel = new_vel, 
@@ -42,6 +42,8 @@ def step (state:State) -> State:
     )
 
     return newState
+
+s0 = State(xpos = 0.0, ypos = 0.0, xvel = 0.0, time = 0.0)
 
 def animate (i):
     global s0
